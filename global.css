@@ -1,7 +1,244 @@
 /* ============================================================
-   global.css — MDM1
-   مشترك بين كل الصفحات
-   يحتوي على: متغيرات الألوان، الخطوط، navbar، footer،
-               particles، custom cursor، loading screen،
-               زر العودة للأعلى
+   MDM1 — GLOBAL FOUNDATION
+   Shared by all 30 pages: colors, type, navbar, chapter dividers,
+   particles container, custom cursor, scroll-reveal utilities.
+   Namespace: every custom class is prefixed `mdm1-` to avoid
+   collisions with page-specific CSS (hub.css, whitepaper.css...).
    ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap');
+
+:root{
+  /* ---- Color tokens ---- */
+  --bg-void:    #0A0907;   /* الخلفية الأساسية - أسود دافئ كالعدم قبل الخلق */
+  --bg-panel:   #14110C;   /* خلفية البطاقات والأقسام */
+  --gold-deep:  #6B5217;   /* برونزي غامق - حدود وفواصل */
+  --gold:       #C9A227;   /* الذهب الأساسي - العلامة */
+  --gold-bright:#E8C547;   /* ذهب لامع - تفاعل وتمييز */
+  --ink:        #EDE6D3;   /* نص بلون البردي الفاتح */
+  --ink-dim:    #B8AE93;   /* نص ثانوي خافت */
+  --shadow-red: #3D1010;   /* أحمر دموي خافت - لمحتوى الظلام/المضلل */
+
+  /* ---- Type ---- */
+  --font-display: 'Cairo', sans-serif;
+  --font-body: 'Tajawal', sans-serif;
+
+  /* ---- Spacing scale ---- */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+
+  --nav-height: 72px;
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after{ box-sizing: border-box; margin:0; padding:0; }
+
+html{ scroll-behavior: smooth; }
+
+body{
+  background: var(--bg-void);
+  color: var(--ink);
+  font-family: var(--font-body);
+  direction: rtl;
+  text-align: right;
+  line-height: 1.8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3,h4,.mdm1-display{
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0;
+}
+
+a{ color: inherit; text-decoration: none; }
+img, video{ max-width:100%; display:block; }
+
+::selection{ background: var(--gold-deep); color: var(--ink); }
+
+/* visible keyboard focus, kept gold, never removed */
+:focus-visible{
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.mdm1-nav{
+  position: fixed;
+  top: 0; right: 0; left: 0;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-md);
+  z-index: 1000;
+  background: rgba(10,9,7,0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid transparent;
+  transition: background .4s ease, border-color .4s ease;
+}
+.mdm1-nav.is-scrolled{
+  background: rgba(10,9,7,0.92);
+  border-bottom-color: var(--gold-deep);
+}
+
+.mdm1-nav__logo{
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: var(--gold);
+  display:flex; align-items:center; gap:.5rem;
+}
+
+.mdm1-nav__links{
+  display:flex; align-items:center; gap: var(--space-md);
+  list-style:none;
+}
+.mdm1-nav__links a{
+  font-size: .95rem;
+  color: var(--ink-dim);
+  transition: color .25s ease;
+  position: relative;
+}
+.mdm1-nav__links a:hover,
+.mdm1-nav__links a.is-active{ color: var(--gold-bright); }
+.mdm1-nav__links a.is-active::after{
+  content:"";
+  position:absolute; right:0; left:0; bottom:-6px;
+  height:1px; background: var(--gold);
+}
+
+.mdm1-nav__toggle{
+  display:none;
+  width: 32px; height: 24px;
+  position: relative;
+  background:none; border:none; cursor:pointer;
+}
+.mdm1-nav__toggle span{
+  position:absolute; right:0; left:0; height:2px;
+  background: var(--gold); transition: transform .3s ease, opacity .3s ease;
+}
+.mdm1-nav__toggle span:nth-child(1){ top:0; }
+.mdm1-nav__toggle span:nth-child(2){ top:11px; }
+.mdm1-nav__toggle span:nth-child(3){ top:22px; }
+.mdm1-nav__toggle.is-open span:nth-child(1){ transform: translateY(11px) rotate(45deg); }
+.mdm1-nav__toggle.is-open span:nth-child(2){ opacity:0; }
+.mdm1-nav__toggle.is-open span:nth-child(3){ transform: translateY(-11px) rotate(-45deg); }
+
+@media (max-width: 860px){
+  .mdm1-nav__toggle{ display:block; }
+  .mdm1-nav__links{
+    position: fixed; inset: var(--nav-height) 0 0 0;
+    flex-direction: column; justify-content:center;
+    background: var(--bg-void);
+    transform: translateY(-8px);
+    opacity:0; pointer-events:none;
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .mdm1-nav__links.is-open{
+    opacity:1; pointer-events:auto; transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   CHAPTER / SECTION MARKERS
+   Mirrors the existing pattern (الفصل الأول • Chapter I) —
+   content is genuinely sequential, so numbering earns its place.
+   ============================================================ */
+.mdm1-chapter{
+  display:flex; align-items:center; gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  color: var(--gold);
+}
+.mdm1-chapter__num{
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+.mdm1-chapter__line{
+  flex:1; height:1px;
+  background: linear-gradient(to left, var(--gold-deep), transparent);
+}
+
+/* ============================================================
+   PARTICLES CANVAS
+   ============================================================ */
+.mdm1-particles{
+  position: fixed; inset:0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   CUSTOM CURSOR (pointer:fine devices only)
+   ============================================================ */
+@media (pointer:fine){
+  .mdm1-cursor-dot, .mdm1-cursor-ring{
+    position: fixed; top:0; left:0;
+    border-radius:50%;
+    pointer-events:none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+  }
+  .mdm1-cursor-dot{
+    width:6px; height:6px;
+    background: var(--gold-bright);
+  }
+  .mdm1-cursor-ring{
+    width:32px; height:32px;
+    border:1px solid var(--gold-deep);
+    transition: transform .15s ease, border-color .2s ease;
+  }
+  .mdm1-cursor-ring.is-active{
+    transform: translate(-50%,-50%) scale(1.5);
+    border-color: var(--gold-bright);
+  }
+  body{ cursor:none; }
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.mdm1-reveal{
+  opacity:0;
+  transform: translateY(24px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.mdm1-reveal.is-visible{
+  opacity:1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .mdm1-reveal{ opacity:1; transform:none; transition:none; }
+  .mdm1-cursor-ring{ transition:none; }
+}
+
+/* ============================================================
+   SHARED BUTTON
+   ============================================================ */
+.mdm1-btn{
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-family: var(--font-display);
+  font-weight:700;
+  padding: .85rem 2rem;
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  background: transparent;
+  border-radius: 2px;
+  cursor:pointer;
+  transition: background .3s ease, color .3s ease;
+}
+.mdm1-btn:hover{
+  background: var(--gold);
+  color: var(--bg-void);
+}
