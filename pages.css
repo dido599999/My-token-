@@ -1,6 +1,171 @@
 /* ============================================================
-   pages.css — MDM1
-   تصميم مشترك للصفحات الجديدة:
-   join, community, roadmap, tokenomics, sharia,
-   faq, game, quiz, gallery, dashboard, blog, about
+   MDM1 — PAGES TEMPLATE
+   Shared by the simple content pages:
+   join, community, roadmap, tokenomics, sharia, faq, gallery, blog, about
+   Depends on global.css tokens (--bg-void, --gold, --ink, etc.)
    ============================================================ */
+
+/* ---------------- PAGE HERO ---------------- */
+.mdm1-page-hero{
+  padding: calc(var(--nav-height) + var(--space-lg)) var(--space-md) var(--space-lg);
+  text-align: center;
+  border-bottom: 1px solid var(--gold-deep);
+  position: relative;
+  z-index: 1;
+}
+.mdm1-page-hero__eyebrow{
+  display:inline-block;
+  font-family: var(--font-display);
+  font-size: .85rem;
+  letter-spacing: .15em;
+  color: var(--gold);
+  margin-bottom: var(--space-xs);
+}
+.mdm1-page-hero h1{
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+.mdm1-page-hero p{
+  max-width: 640px;
+  margin: var(--space-sm) auto 0;
+  color: var(--ink-dim);
+}
+
+/* ---------------- SECTION / PROSE ---------------- */
+.mdm1-section{
+  max-width: 880px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+  position: relative;
+  z-index: 1;
+}
+.mdm1-prose p{ margin-bottom: var(--space-sm); color: var(--ink); }
+.mdm1-prose h2{ margin: var(--space-md) 0 var(--space-sm); font-size: 1.5rem; }
+.mdm1-prose ul{ padding-right: 1.4rem; margin-bottom: var(--space-sm); }
+.mdm1-prose li{ margin-bottom: .5rem; }
+
+/* ---------------- CARD ---------------- */
+.mdm1-card{
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-deep);
+  border-radius: 4px;
+  padding: var(--space-sm);
+  transition: border-color .3s ease, transform .3s ease;
+}
+.mdm1-card:hover{
+  border-color: var(--gold);
+  transform: translateY(-4px);
+}
+
+/* ---------------- GRID (gallery / blog) ---------------- */
+.mdm1-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-sm);
+}
+.mdm1-grid--gallery .mdm1-card{ padding:0; overflow:hidden; }
+.mdm1-grid--gallery img{
+  width:100%; aspect-ratio: 4/3; object-fit: cover;
+  transition: transform .4s ease;
+}
+.mdm1-grid--gallery .mdm1-card:hover img{ transform: scale(1.06); }
+
+.mdm1-blog-card h3{ margin: var(--space-xs) 0 .4rem; font-size: 1.1rem; }
+.mdm1-blog-card time{ color: var(--ink-dim); font-size: .8rem; }
+.mdm1-blog-card p{ color: var(--ink-dim); font-size: .9rem; margin-top: .5rem; }
+
+/* ---------------- ACCORDION (faq) ---------------- */
+.mdm1-accordion__item{
+  border-bottom: 1px solid var(--gold-deep);
+}
+.mdm1-accordion__q{
+  width:100%;
+  display:flex; align-items:center; justify-content:space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  background:none; border:none;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ink);
+  cursor:pointer;
+  text-align: right;
+}
+.mdm1-accordion__q:hover{ color: var(--gold-bright); }
+.mdm1-accordion__icon{
+  flex-shrink:0;
+  width:20px; height:20px;
+  position:relative;
+}
+.mdm1-accordion__icon::before,
+.mdm1-accordion__icon::after{
+  content:"";
+  position:absolute; top:50%; right:50%;
+  background: var(--gold);
+  transform: translate(50%,-50%);
+}
+.mdm1-accordion__icon::before{ width:14px; height:2px; }
+.mdm1-accordion__icon::after{ width:2px; height:14px; transition: transform .3s ease; }
+.mdm1-accordion__item.is-open .mdm1-accordion__icon::after{ transform: translate(50%,-50%) scaleY(0); }
+
+.mdm1-accordion__a{
+  max-height:0;
+  overflow:hidden;
+  color: var(--ink-dim);
+  transition: max-height .35s ease, padding .35s ease;
+}
+.mdm1-accordion__item.is-open .mdm1-accordion__a{
+  padding-bottom: var(--space-sm);
+}
+
+/* ---------------- TIMELINE (roadmap) ---------------- */
+.mdm1-timeline{
+  position: relative;
+  padding-right: var(--space-md);
+  border-right: 1px solid var(--gold-deep);
+}
+.mdm1-timeline__step{
+  position: relative;
+  padding-bottom: var(--space-lg);
+}
+.mdm1-timeline__step:last-child{ padding-bottom:0; }
+.mdm1-timeline__step::before{
+  content:"";
+  position:absolute; right: calc(-1 * var(--space-md) - 5px); top:6px;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px var(--bg-void);
+}
+.mdm1-timeline__phase{
+  font-family: var(--font-display);
+  color: var(--gold);
+  font-size: .85rem;
+  letter-spacing: .1em;
+}
+.mdm1-timeline__step h3{ margin: .3rem 0; font-size: 1.2rem; }
+.mdm1-timeline__step p{ color: var(--ink-dim); }
+.mdm1-timeline__step.is-done .mdm1-timeline__phase{ color: var(--gold-bright); }
+.mdm1-timeline__step.is-done::before{ background: var(--gold-bright); }
+
+/* ---------------- TABLE (tokenomics) ---------------- */
+.mdm1-table{
+  width:100%;
+  border-collapse: collapse;
+  font-size: .95rem;
+}
+.mdm1-table th, .mdm1-table td{
+  padding: .85rem 1rem;
+  text-align: right;
+  border-bottom: 1px solid var(--gold-deep);
+}
+.mdm1-table th{
+  font-family: var(--font-display);
+  color: var(--gold);
+  font-weight:700;
+}
+.mdm1-table tr:hover td{ background: rgba(201,162,39,0.05); }
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 600px){
+  .mdm1-section{ padding: var(--space-md) var(--space-sm); }
+  .mdm1-table{ font-size: .85rem; }
+  .mdm1-table th, .mdm1-table td{ padding: .6rem .5rem; }
+}
