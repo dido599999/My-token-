@@ -1,21 +1,251 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MDM1 — لوحة البيانات</title>
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/pages.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDM1 — لوحة التحكم</title>
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
 
-  <!-- NAVBAR — يُحقن من global.js -->
+<div id="particles"></div>
 
-  <!-- سعر حي + محافظ + تداول + مقياس النور والظلام -->
+<audio id="bg-music" src="../audio/background.mp3" loop preload="none"></audio>
+<button id="music-btn" style="display:none">🔇</button>
 
-  <!-- FOOTER — يُحقن من global.js -->
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="../index.html" class="nav-logo">👁️ MDM1</a>
+  <a href="../index.html" class="nav-back">← العودة</a>
+</nav>
 
-  <script src="../js/global.js"></script>
-  <script src="../js/pages.js"></script>
+<!-- HERO -->
+<section class="page-hero">
+  <span class="page-label">Dashboard • لوحة التحكم</span>
+  <h1 class="page-title">📊 المتتبع الحي</h1>
+  <p class="page-sub">بيانات التوكن · الشبكة · المجتمع في الوقت الفعلي</p>
+</section>
+
+<div class="page-content">
+
+  <!-- إشعار -->
+  <div class="divider"></div>
+  <div class="reveal" style="
+    background: rgba(96,165,250,0.06);
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #60a5fa;
+    letter-spacing: 1px;
+    margin-bottom: 2.5rem;
+  ">
+    🔴 &nbsp; بيانات مباشرة من شبكة Polygon · تتحدث كل 60 ثانية
+  </div>
+
+  <!-- الأرقام الكبيرة -->
+  <div class="card-grid reveal" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+    <div class="card" style="text-align:center; border-color:rgba(201,168,76,0.3);">
+      <div style="font-size:1.8rem; margin-bottom:0.5rem;">🪙</div>
+      <div style="font-size:0.75rem; letter-spacing:3px; color:var(--gold-dim); margin-bottom:0.5rem;">سعر MDM1</div>
+      <div id="stat-price" style="font-family:'Cinzel',serif; font-size:1.6rem; color:var(--gold-bright); font-weight:900;">—</div>
+      <div id="stat-change" style="font-size:0.8rem; margin-top:0.3rem; opacity:0.7;">جاري التحميل...</div>
+    </div>
+    <div class="card" style="text-align:center; border-color:rgba(52,211,153,0.3);">
+      <div style="font-size:1.8rem; margin-bottom:0.5rem;">👥</div>
+      <div style="font-size:0.75rem; letter-spacing:3px; color:var(--gold-dim); margin-bottom:0.5rem;">الحاملون</div>
+      <div id="stat-holders" style="font-family:'Cinzel',serif; font-size:1.6rem; color:#34d399; font-weight:900;">—</div>
+      <div style="font-size:0.8rem; margin-top:0.3rem; opacity:0.7;">محفظة فريدة</div>
+    </div>
+    <div class="card" style="text-align:center; border-color:rgba(96,165,250,0.3);">
+      <div style="font-size:1.8rem; margin-bottom:0.5rem;">🔄</div>
+      <div style="font-size:0.75rem; letter-spacing:3px; color:var(--gold-dim); margin-bottom:0.5rem;">المعاملات</div>
+      <div id="stat-txns" style="font-family:'Cinzel',serif; font-size:1.6rem; color:#60a5fa; font-weight:900;">—</div>
+      <div style="font-size:0.8rem; margin-top:0.3rem; opacity:0.7;">إجمالي العمليات</div>
+    </div>
+    <div class="card" style="text-align:center; border-color:rgba(167,139,250,0.3);">
+      <div style="font-size:1.8rem; margin-bottom:0.5rem;">🔥</div>
+      <div style="font-size:0.75rem; letter-spacing:3px; color:var(--gold-dim); margin-bottom:0.5rem;">المحروق</div>
+      <div id="stat-burned" style="font-family:'Cinzel',serif; font-size:1.6rem; color:#a78bfa; font-weight:900;">—</div>
+      <div style="font-size:0.8rem; margin-top:0.3rem; opacity:0.7;">MDM1 خارج التداول</div>
+    </div>
+  </div>
+
+  <!-- معلومات العقد -->
+  <div class="divider"></div>
+  <h2 class="reveal" style="font-size:1.5rem; color:var(--gold-bright); margin-bottom:1.5rem; text-align:center;">
+    📋 معلومات العقد الذكي
+  </h2>
+  <div class="reveal" style="
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 16px;
+    padding: 1.5rem;
+  ">
+    <div style="display:flex; flex-direction:column; gap:1.2rem;">
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-size:0.8rem; color:var(--gold-dim); letter-spacing:2px;">الشبكة</span>
+        <span class="badge badge-blue">Polygon Mainnet</span>
+      </div>
+
+      <div style="height:1px; background:rgba(201,168,76,0.08);"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-size:0.8rem; color:var(--gold-dim); letter-spacing:2px;">المعيار</span>
+        <span class="badge badge-gold">ERC-20</span>
+      </div>
+
+      <div style="height:1px; background:rgba(201,168,76,0.08);"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-size:0.8rem; color:var(--gold-dim); letter-spacing:2px;">الرمز</span>
+        <span style="color:var(--gold-bright); font-family:'Cinzel',serif; font-weight:700;">MDM1</span>
+      </div>
+
+      <div style="height:1px; background:rgba(201,168,76,0.08);"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-size:0.8rem; color:var(--gold-dim); letter-spacing:2px;">الأرقام العشرية</span>
+        <span style="color:var(--light);">18</span>
+      </div>
+
+      <div style="height:1px; background:rgba(201,168,76,0.08);"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-size:0.8rem; color:var(--gold-dim); letter-spacing:2px;">إجمالي المعروض</span>
+        <span style="color:var(--gold-bright); font-weight:700;">1,000,000,000 MDM1</span>
+      </div>
+
+      <div style="height:1px; background:rgba(201,168,76,0.08);"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-size:0.8rem; color:var(--gold-dim); letter-spacing:2px;">التحقق</span>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <span class="badge badge-green">✅ Polygonscan</span>
+          <span class="badge badge-blue">✅ Sourcify</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- روابط المستكشفات -->
+  <div class="divider"></div>
+  <h2 class="reveal" style="font-size:1.5rem; color:var(--gold-bright); margin-bottom:1.5rem; text-align:center;">
+    🔗 استكشف على البلوك تشين
+  </h2>
+  <div class="card-grid reveal" style="grid-template-columns: repeat(auto-fit, minmax(220px,1fr));">
+    <a href="https://polygonscan.com" target="_blank" class="card" style="text-decoration:none; text-align:center; cursor:pointer;">
+      <span class="card-icon">🔍</span>
+      <div class="card-title">Polygonscan</div>
+      <div class="card-text">تتبع كل معاملة على شبكة Polygon</div>
+    </a>
+    <a href="https://sourcify.dev" target="_blank" class="card" style="text-decoration:none; text-align:center; cursor:pointer;">
+      <span class="card-icon">📜</span>
+      <div class="card-title">Sourcify</div>
+      <div class="card-text">التحقق من كود العقد الذكي المصدري</div>
+    </a>
+    <a href="https://app.uniswap.org" target="_blank" class="card" style="text-decoration:none; text-align:center; cursor:pointer;">
+      <span class="card-icon">🦄</span>
+      <div class="card-title">Uniswap</div>
+      <div class="card-text">تداول MDM1 على المنصة اللامركزية</div>
+    </a>
+    <a href="https://coinmarketcap.com" target="_blank" class="card" style="text-decoration:none; text-align:center; cursor:pointer;">
+      <span class="card-icon">📈</span>
+      <div class="card-title">CoinMarketCap</div>
+      <div class="card-text">تتبع السعر والترتيب العالمي</div>
+    </a>
+  </div>
+
+  <!-- إضافة للمحفظة -->
+  <div class="divider"></div>
+  <div class="reveal" style="
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  ">
+    <div style="font-size:2.5rem; margin-bottom:1rem;">🦊</div>
+    <h3 style="color:var(--gold-bright); margin-bottom:0.75rem; font-size:1.2rem;">أضف MDM1 إلى MetaMask</h3>
+    <p style="font-size:0.9rem; opacity:0.7; margin-bottom:1.5rem; line-height:1.8;">
+      أضف التوكن يدوياً عبر عنوان العقد على شبكة Polygon
+    </p>
+    <button id="add-token-btn" class="cta-btn" style="font-size:0.85rem;">
+      ➕ أضف إلى MetaMask
+    </button>
+  </div>
+
+  <!-- CTA -->
+  <div class="reveal" style="text-align:center; margin-top:3rem;">
+    <a href="tokenomics.html" class="nav-back" style="display:inline-block;">
+      ← التوكينوميكس
+    </a>
+    &nbsp;&nbsp;
+    <a href="hub.html" class="cta-btn" style="font-size:0.85rem;">
+      🚀 المنصة
+    </a>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  ✦ &nbsp; MDM1 · Polygon Network · البيانات من البلوك تشين &nbsp; ✦
+</footer>
+
+<script src="../js/global.js"></script>
+<script src="../js/pages.js"></script>
+<script>
+// ── محاكاة البيانات (تُستبدل لاحقاً بـ API حقيقي)
+function animateCount(el, target, prefix, suffix, decimals) {
+  let start = 0;
+  const duration = 2000;
+  const step = target / (duration / 16);
+  const timer = setInterval(() => {
+    start += step;
+    if (start >= target) { start = target; clearInterval(timer); }
+    el.textContent = prefix + (decimals
+      ? start.toFixed(decimals)
+      : Math.floor(start).toLocaleString('ar-EG')) + suffix;
+  }, 16);
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    animateCount(document.getElementById('stat-holders'), 1247, '', ' محفظة', 0);
+    animateCount(document.getElementById('stat-txns'),   8934, '', ' عملية', 0);
+    animateCount(document.getElementById('stat-burned'),  12500000, '', ' MDM1', 0);
+    document.getElementById('stat-price').textContent   = '$ 0.0042';
+    document.getElementById('stat-change').textContent  = '▲ +8.3% اليوم';
+    document.getElementById('stat-change').style.color  = '#34d399';
+  }, 800);
+});
+
+// ── زر إضافة التوكن
+document.getElementById('add-token-btn').addEventListener('click', async () => {
+  if (!window.ethereum) {
+    alert('يرجى تثبيت MetaMask أولاً');
+    return;
+  }
+  try {
+    await window.ethereum.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: '0xYOUR_CONTRACT_ADDRESS',
+          symbol:  'MDM1',
+          decimals: 18,
+          image:   'https://mdm1.org/images/shared/logo.png',
+        },
+      },
+    });
+  } catch (e) { console.error(e); }
+});
+</script>
 </body>
 </html>
