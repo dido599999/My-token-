@@ -1,20 +1,592 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MDM1 — المجتمع</title>
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/pages.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المجتمع | MDM1</title>
+  <meta name="description" content="انضم إلى مجتمع MDM1 العالمي وتواصل مع الآلاف من المؤمنين بالمشروع">
+  <meta name="keywords" content="MDM1, community, social, network">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/pages.css">
+
+  <style>
+    .community-channels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+
+    .channel-card {
+      background: rgba(26, 26, 26, 0.7);
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      padding: 35px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      opacity: 0;
+      animation: slideUp 0.8s ease-out forwards;
+    }
+
+    .channel-card:nth-child(1) { animation-delay: 0.1s; }
+    .channel-card:nth-child(2) { animation-delay: 0.2s; }
+    .channel-card:nth-child(3) { animation-delay: 0.3s; }
+    .channel-card:nth-child(4) { animation-delay: 0.4s; }
+    .channel-card:nth-child(5) { animation-delay: 0.5s; }
+    .channel-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .channel-card:hover {
+      border-color: #d4af37;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+      transform: translateY(-10px);
+    }
+
+    .channel-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .channel-card:hover .channel-icon {
+      transform: scale(1.2);
+    }
+
+    .channel-card h3 {
+      color: #d4af37;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+
+    .channel-card p {
+      color: #e5e7eb;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .channel-stats {
+      display: flex;
+      justify-content: space-around;
+      padding: 15px 0;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      margin-bottom: 15px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      color: #d4af37;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      color: #9ca3af;
+      font-size: 0.8rem;
+    }
+
+    .join-button {
+      display: inline-block;
+      padding: 10px 25px;
+      background: linear-gradient(135deg, #d4af37, #e5c158);
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .join-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    }
+
+    /* Events Section */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+
+    .event-card {
+      background: rgba(26, 26, 26, 0.7);
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .event-header {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(212, 175, 55, 0.2));
+      padding: 20px;
+      border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .event-date {
+      color: #d4af37;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    .event-title {
+      color: #e5e7eb;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .event-body {
+      padding: 20px;
+    }
+
+    .event-body p {
+      color: #e5e7eb;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      text-align: right;
+      direction: rtl;
+    }
+
+    .event-attendees {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+
+    .attendee-avatars {
+      display: flex;
+      margin-right: 10px;
+    }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4af37, #8b5cf6);
+      border: 2px solid #0a0a0a;
+      margin-right: -8px;
+    }
+
+    /* Testimonials */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+
+    .testimonial-card {
+      background: rgba(26, 26, 26, 0.7);
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      padding: 25px;
+      opacity: 0;
+      animation: slideUp 0.8s ease-out forwards;
+    }
+
+    .testimonial-card:nth-child(1) { animation-delay: 0.1s; }
+    .testimonial-card:nth-child(2) { animation-delay: 0.2s; }
+    .testimonial-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .testimonial-text {
+      color: #e5e7eb;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      line-height: 1.6;
+      font-style: italic;
+      text-align: right;
+      direction: rtl;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4af37, #8b5cf6);
+    }
+
+    .author-info {
+      flex: 1;
+      text-align: right;
+      direction: rtl;
+    }
+
+    .author-name {
+      color: #d4af37;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .author-title {
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+
+    .stars {
+      color: #d4af37;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <!-- Favicon -->
+  <link rel="icon" href="../images/shared/logo.png">
 </head>
 <body>
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        🔱 MDM1
+      </a>
+      <div class="nav-menu" id="nav-menu">
+        <a href="../index.html" class="nav-link">الرئيسية</a>
+        <a href="../pages/whitepaper.html" class="nav-link">الورقة البيضاء</a>
+        <a href="../pages/hub.html" class="nav-link">المنصة</a>
+        <a href="../pages/community.html" class="nav-link active">المجتمع</a>
+        <a href="../pages/join.html" class="nav-link">الانضمام</a>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
 
-  <!-- NAVBAR — يُحقن من global.js -->
+  <!-- Main Content -->
+  <main class="page-container">
+    <!-- Header -->
+    <section class="page-header">
+      <h1>مجتمع MDM1</h1>
+      <p>انضم إلى آلاف المشاركين الذين يشكلون المستقبل</p>
+    </section>
 
-  <!-- إحصائيات المجتمع + Wall of Believers + روابط التواصل -->
+    <!-- Community Channels -->
+    <section class="page-content reveal">
+      <h2 style="text-align: center; color: #d4af37; margin-bottom: 50px;">قنوات التواصل</h2>
+      
+      <div class="community-channels">
+        <!-- Twitter -->
+        <div class="channel-card">
+          <div class="channel-icon">𝕏</div>
+          <h3>Twitter / X</h3>
+          <p>تابع آخر الأخبار والتحديثات الفورية</p>
+          <div class="channel-stats">
+            <div class="stat">
+              <div class="stat-number">15K+</div>
+              <div class="stat-label">متابع</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">500+</div>
+              <div class="stat-label">تغريدة</div>
+            </div>
+          </div>
+          <a href="https://twitter.com/mdm1" target="_blank" class="join-button">متابعة</a>
+        </div>
 
-  <!-- FOOTER — يُحقن من global.js -->
+        <!-- Discord -->
+        <div class="channel-card">
+          <div class="channel-icon">💬</div>
+          <h3>Discord</h3>
+          <p>تفاعل مباشر مع الفريق والمجتمع</p>
+          <div class="channel-stats">
+            <div class="stat">
+              <div class="stat-number">3K+</div>
+              <div class="stat-label">عضو</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">50+</div>
+              <div class="stat-label">قناة</div>
+            </div>
+          </div>
+          <a href="https://discord.gg/mdm1" target="_blank" class="join-button">الانضمام</a>
+        </div>
 
+        <!-- Telegram -->
+        <div class="channel-card">
+          <div class="channel-icon">📱</div>
+          <h3>Telegram</h3>
+          <p>رسائل محدثة يومية وإعلانات هامة</p>
+          <div class="channel-stats">
+            <div class="stat">
+              <div class="stat-number">8K+</div>
+              <div class="stat-label">عضو</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">24/7</div>
+              <div class="stat-label">نشيط</div>
+            </div>
+          </div>
+          <a href="https://t.me/mdm1official" target="_blank" class="join-button">الانضمام</a>
+        </div>
+
+        <!-- YouTube -->
+        <div class="channel-card">
+          <div class="channel-icon">▶️</div>
+          <h3>YouTube</h3>
+          <p>محتوى تعليمي وشروحات مفصلة</p>
+          <div class="channel-stats">
+            <div class="stat">
+              <div class="stat-number">2K+</div>
+              <div class="stat-label">مشترك</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">100+</div>
+              <div class="stat-label">فيديو</div>
+            </div>
+          </div>
+          <a href="https://youtube.com/@mdm1" target="_blank" class="join-button">اشترك</a>
+        </div>
+
+        <!-- LinkedIn -->
+        <div class="channel-card">
+          <div class="channel-icon">💼</div>
+          <h3>LinkedIn</h3>
+          <p>محتوى احترافي وفرص عمل</p>
+          <div class="channel-stats">
+            <div class="stat">
+              <div class="stat-number">5K+</div>
+              <div class="stat-label">متابع</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">30+</div>
+              <div class="stat-label">منشور</div>
+            </div>
+          </div>
+          <a href="https://linkedin.com/company/mdm1" target="_blank" class="join-button">متابعة</a>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="channel-card">
+          <div class="channel-icon">📧</div>
+          <h3>النشرة البريدية</h3>
+          <p>محتوى حصري في بريدك الإلكتروني</p>
+          <div class="channel-stats">
+            <div class="stat">
+              <div class="stat-number">10K+</div>
+              <div class="stat-label">مشترك</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">أسبوعي</div>
+              <div class="stat-label">محتوى</div>
+            </div>
+          </div>
+          <a href="../pages/join.html" class="join-button">اشترك</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcoming Events -->
+    <section class="page-content reveal">
+      <h2 style="text-align: center; color: #d4af37; margin: 60px 0 50px;">الفعاليات القادمة</h2>
+      
+      <div class="events-grid">
+        <div class="event-card">
+          <div class="event-header">
+            <div class="event-date">📅 15 يوليو 2025</div>
+            <div class="event-title">ويبينار: شرح الورقة البيضاء</div>
+          </div>
+          <div class="event-body">
+            <p>جلسة حوار مباشرة مع فريق MDM1 لشرح تفاصيل المشروع والإجابة على الأسئلة</p>
+            <div class="event-attendees">
+              <div class="attendee-avatars">
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+              </div>
+              <span>250+ سيحضرون</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-header">
+            <div class="event-date">📅 25 يوليو 2025</div>
+            <div class="event-title">حفل إطلاق الشبكة الرئيسية</div>
+          </div>
+          <div class="event-body">
+            <p>احتفالية افتتاح الشبكة الرئيسية لـ MDM1 مع عروض وجوائز حصرية</p>
+            <div class="event-attendees">
+              <div class="attendee-avatars">
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+              </div>
+              <span>500+ مسجلون</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card">
+          <div class="event-header">
+            <div class="event-date">📅 1 أغسطس 2025</div>
+            <div class="event-title">مسابقة تصميم الشعار</div>
+          </div>
+          <div class="event-body">
+            <p>أنشئ شعارك الخاص لـ MDM1 وفز بجوائز قيمة من العملات الرقمية</p>
+            <div class="event-attendees">
+              <div class="attendee-avatars">
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+              </div>
+              <span>100+ مشارك</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="page-content reveal">
+      <h2 style="text-align: center; color: #d4af37; margin: 60px 0 50px;">آراء المجتمع</h2>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+          <div class="testimonial-text">
+            "مشروع MDM1 فكرة ثورية تجمع بين الإسلام والتكنولوجيا بطريقة رائعة. 
+            أنا فخور جداً بأن أكون جزءاً من هذه الحركة"
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div class="author-info">
+              <div class="author-name">محمد علي</div>
+              <div class="author-title">مستثمر من السعودية</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+          <div class="testimonial-text">
+            "أفضل ما يميز MDM1 هو الشفافية الكاملة والالتزام بالمبادئ الشرعية. 
+            فريق محترف جداً ويستحق الثقة"
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div class="author-info">
+              <div class="author-name">فاطمة الحمادي</div>
+              <div class="author-title">خبيرة مالية من الإمارات</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+          <div class="testimonial-text">
+            "انضممت إلى MDM1 منذ البداية وشاهدت النمو المذهل. 
+            المشروع يستحق كل الدعم والاهتمام"
+          </div>
+          <div class="testimonial-author">
+            <div class="author-avatar"></div>
+            <div class="author-info">
+              <div class="author-name">أحمد الدعيع</div>
+              <div class="author-title">مؤسس من البحرين</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Guidelines -->
+    <section class="community-guidelines reveal">
+      <h2 style="text-align: center; color: #d4af37; margin-bottom: 40px;">إرشادات المجتمع</h2>
+      
+      <div style="max-width: 800px; margin: 0 auto; background: rgba(139, 92, 246, 0.1); border: 2px solid rgba(139, 92, 246, 0.3); border-radius: 12px; padding: 40px;">
+        <p style="color: #e5e7eb; line-height: 1.8; text-align: right; direction: rtl; margin-bottom: 20px;">
+          نحن نتطلع إلى بناء مجتمع احترافي وودود حيث يمكن للجميع أن يتعلموا ويشاركوا بأمان. 
+          الرجاء احترام هذه الإرشادات البسيطة:
+        </p>
+        
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="color: #e5e7eb; padding: 10px 0; text-align: right; direction: rtl; border-bottom: 1px solid rgba(212, 175, 55, 0.2);">
+            ✓ احترم جميع الأعضاء وتواصل بأدب واحترام
+          </li>
+          <li style="color: #e5e7eb; padding: 10px 0; text-align: right; direction: rtl; border-bottom: 1px solid rgba(212, 175, 55, 0.2);">
+            ✓ لا تنشر محتوى مسيء أو مخالف للشريعة
+          </li>
+          <li style="color: #e5e7eb; padding: 10px 0; text-align: right; direction: rtl; border-bottom: 1px solid rgba(212, 175, 55, 0.2);">
+            ✓ لا تقم بالترويج لمشاريع منافسة دون إذن
+          </li>
+          <li style="color: #e5e7eb; padding: 10px 0; text-align: right; direction: rtl; border-bottom: 1px solid rgba(212, 175, 55, 0.2);">
+            ✓ حافظ على الخصوصية وسرية المعلومات الشخصية
+          </li>
+          <li style="color: #e5e7eb; padding: 10px 0; text-align: right; direction: rtl;">
+            ✓ ساهم بمحتوى بناء وإيجابي يعزز المشروع
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-full reveal">
+      <h2>هل أنت مستعد للانضمام؟</h2>
+      <p>كن جزءاً من أكبر مجتمع تمويل إسلامي رقمي</p>
+      <a href="../pages/join.html" class="btn-primary">الانضمام الآن</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>MDM1</h3>
+        <p>عملة رقمية شرعية مبنية على قيم الإسلام والعدالة المالية</p>
+      </div>
+      <div class="footer-section">
+        <h4>الروابط السريعة</h4>
+        <ul>
+          <li><a href="../index.html">الرئيسية</a></li>
+          <li><a href="../pages/whitepaper.html">الورقة البيضاء</a></li>
+          <li><a href="../pages/hub.html">المنصة</a></li>
+          <li><a href="../pages/join.html">الانضمام</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>المتابعة</h4>
+        <div class="social-links">
+          <a href="#" class="social-link">Twitter</a>
+          <a href="#" class="social-link">Discord</a>
+          <a href="#" class="social-link">Telegram</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 MDM1. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
   <script src="../js/global.js"></script>
   <script src="../js/pages.js"></script>
 </body>
