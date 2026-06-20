@@ -1,20 +1,455 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MDM1 — خارطة الطريق</title>
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/pages.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خطة الطريق | MDM1</title>
+  <meta name="description" content="خطة تطور مشروع MDM1 والمراحل القادمة">
+  <meta name="keywords" content="MDM1, roadmap, phases, development">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/pages.css">
+
+  <style>
+    .roadmap-timeline {
+      position: relative;
+      margin: 60px 0;
+    }
+
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, #d4af37, transparent);
+      transform: translateX(-50%);
+    }
+
+    .roadmap-phases {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .roadmap-phase {
+      position: relative;
+      width: 100%;
+      display: flex;
+      opacity: 0;
+      animation: slideUp 0.8s ease-out forwards;
+    }
+
+    .roadmap-phase:nth-child(1) { animation-delay: 0.1s; }
+    .roadmap-phase:nth-child(2) { animation-delay: 0.2s; }
+    .roadmap-phase:nth-child(3) { animation-delay: 0.3s; }
+    .roadmap-phase:nth-child(4) { animation-delay: 0.4s; }
+    .roadmap-phase:nth-child(5) { animation-delay: 0.5s; }
+    .roadmap-phase:nth-child(6) { animation-delay: 0.6s; }
+
+    .roadmap-phase:nth-child(odd) {
+      flex-direction: row;
+    }
+
+    .roadmap-phase:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .roadmap-content {
+      width: 45%;
+      padding: 30px;
+      background: rgba(26, 26, 26, 0.7);
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .roadmap-phase:hover .roadmap-content {
+      border-color: #d4af37;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .roadmap-marker {
+      width: 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .roadmap-dot {
+      width: 30px;
+      height: 30px;
+      background: #d4af37;
+      border: 4px solid #0a0a0a;
+      border-radius: 50%;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    }
+
+    .roadmap-phase:hover .roadmap-dot {
+      width: 40px;
+      height: 40px;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+    }
+
+    .roadmap-phase h3 {
+      color: #d4af37;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .phase-date {
+      color: #8b5cf6;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .roadmap-content p {
+      color: #e5e7eb;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      text-align: right;
+      direction: rtl;
+    }
+
+    .roadmap-items {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    .roadmap-items li {
+      color: #e5e7eb;
+      padding: 8px 0;
+      padding-right: 20px;
+      position: relative;
+      text-align: right;
+      direction: rtl;
+    }
+
+    .roadmap-items li::before {
+      content: '✓';
+      position: absolute;
+      right: 0;
+      color: #10b981;
+      font-weight: bold;
+    }
+
+    .phase-status {
+      display: inline-block;
+      padding: 5px 15px;
+      background: rgba(139, 92, 246, 0.2);
+      color: #8b5cf6;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-top: 15px;
+    }
+
+    .phase-status.completed {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .phase-status.current {
+      background: rgba(220, 38, 38, 0.2);
+      color: #dc2626;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 1024px) {
+      .roadmap-timeline::before {
+        left: 15px;
+      }
+
+      .roadmap-phase {
+        flex-direction: column !important;
+      }
+
+      .roadmap-content,
+      .roadmap-marker {
+        width: 100%;
+      }
+
+      .roadmap-marker {
+        height: 40px;
+        margin-bottom: 20px;
+      }
+
+      .roadmap-dot {
+        width: 35px;
+        height: 35px;
+      }
+    }
+  </style>
+
+  <!-- Favicon -->
+  <link rel="icon" href="../images/shared/logo.png">
 </head>
 <body>
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        🔱 MDM1
+      </a>
+      <div class="nav-menu" id="nav-menu">
+        <a href="../index.html" class="nav-link">الرئيسية</a>
+        <a href="../pages/whitepaper.html" class="nav-link">الورقة البيضاء</a>
+        <a href="../pages/hub.html" class="nav-link">المنصة</a>
+        <a href="../pages/roadmap.html" class="nav-link active">الخطة</a>
+        <a href="../pages/community.html" class="nav-link">المجتمع</a>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
 
-  <!-- NAVBAR — يُحقن من global.js -->
+  <!-- Main Content -->
+  <main class="page-container">
+    <!-- Header -->
+    <section class="page-header">
+      <h1>خطة الطريق</h1>
+      <p>رحلتنا نحو بناء مستقبل مالي إسلامي</p>
+    </section>
 
-  <!-- خط زمني بصري + مراحل + نسبة إنجاز -->
+    <!-- Introduction -->
+    <section class="intro-section reveal">
+      <p style="text-align: center; color: #e5e7eb; font-size: 1.1rem; max-width: 700px; margin: 0 auto 50px;">
+        نحن ملتزمون برؤية واضحة ومخطط زمني محدد لبناء منصة MDM1 المتكاملة. 
+        تابع معنا كل مرحلة من رحلة التطور والابتكار.
+      </p>
+    </section>
 
-  <!-- FOOTER — يُحقن من global.js -->
+    <!-- Timeline -->
+    <section class="roadmap-timeline reveal">
+      <div class="roadmap-phases">
+        <!-- Phase 1 -->
+        <div class="roadmap-phase">
+          <div class="roadmap-marker">
+            <div class="roadmap-dot"></div>
+          </div>
+          <div class="roadmap-content">
+            <h3>📋 المرحلة 1: التأسيس</h3>
+            <span class="phase-date">Q1-Q2 2024</span>
+            <p>بناء أساس المشروع والتخطيط الاستراتيجي</p>
+            <ul class="roadmap-items">
+              <li>تطوير المفهوم والرؤية</li>
+              <li>الاستشارات الشرعية</li>
+              <li>البحث والتطوير الأولي</li>
+              <li>تكوين فريق العمل</li>
+            </ul>
+            <span class="phase-status completed">✓ مكتملة</span>
+          </div>
+        </div>
 
+        <!-- Phase 2 -->
+        <div class="roadmap-phase">
+          <div class="roadmap-marker">
+            <div class="roadmap-dot"></div>
+          </div>
+          <div class="roadmap-content">
+            <h3>🔧 المرحلة 2: التطوير التقني</h3>
+            <span class="phase-date">Q3-Q4 2024</span>
+            <p>تطوير البلوكتشين والمنصة الأساسية</p>
+            <ul class="roadmap-items">
+              <li>بناء العقود الذكية</li>
+              <li>تطوير المحفظة الرقمية</li>
+              <li>إنشاء واجهة المستخدم</li>
+              <li>اختبار الأمان والأداء</li>
+            </ul>
+            <span class="phase-status completed">✓ مكتملة</span>
+          </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="roadmap-phase">
+          <div class="roadmap-marker">
+            <div class="roadmap-dot"></div>
+          </div>
+          <div class="roadmap-content">
+            <h3>🚀 المرحلة 3: الإطلاق الأول</h3>
+            <span class="phase-date">Q1 2025</span>
+            <p>إطلاق النسخة التجريبية والاختبار العام</p>
+            <ul class="roadmap-items">
+              <li>إطلاق الشبكة الاختبارية</li>
+              <li>توزيع العملات الأولى</li>
+              <li>تسجيل المستخدمين الأوائل</li>
+              <li>جمع الملاحظات والتحسينات</li>
+            </ul>
+            <span class="phase-status current">● جارية حالياً</span>
+          </div>
+        </div>
+
+        <!-- Phase 4 -->
+        <div class="roadmap-phase">
+          <div class="roadmap-marker">
+            <div class="roadmap-dot"></div>
+          </div>
+          <div class="roadmap-content">
+            <h3>💎 المرحلة 4: الإطلاق الرسمي</h3>
+            <span class="phase-date">Q2 2025</span>
+            <p>الإطلاق الرسمي للمنصة الكاملة</p>
+            <ul class="roadmap-items">
+              <li>إطلاق الشبكة الرئيسية</li>
+              <li>التبادل مع منصات التداول</li>
+              <li>حملات التسويق العالمية</li>
+              <li>توسع الفريق والموارد</li>
+            </ul>
+            <span class="phase-status">⏳ قادمة</span>
+          </div>
+        </div>
+
+        <!-- Phase 5 -->
+        <div class="roadmap-phase">
+          <div class="roadmap-marker">
+            <div class="roadmap-dot"></div>
+          </div>
+          <div class="roadmap-content">
+            <h3>🌍 المرحلة 5: التوسع العالمي</h3>
+            <span class="phase-date">Q3-Q4 2025</span>
+            <p>التوسع في أسواق جديدة وإضافة ميزات متقدمة</p>
+            <ul class="roadmap-items">
+              <li>شراكات مع بنوك إسلامية</li>
+              <li>فتح أسواق جديدة</li>
+              <li>إضافة خدمات مالية متقدمة</li>
+              <li>برامج الجوائز والحوافز</li>
+            </ul>
+            <span class="phase-status">⏳ قادمة</span>
+          </div>
+        </div>
+
+        <!-- Phase 6 -->
+        <div class="roadmap-phase">
+          <div class="roadmap-marker">
+            <div class="roadmap-dot"></div>
+          </div>
+          <div class="roadmap-content">
+            <h3>🎯 المرحلة 6: الاستدامة والنمو</h3>
+            <span class="phase-date">2026+</span>
+            <p>تحقيق الاستدامة والنمو المستمر</p>
+            <ul class="roadmap-items">
+              <li>تحقيق الاكتفاء الذاتي</li>
+              <li>توسع المشروع في أسواق ناشئة</li>
+              <li>تطوير تطبيقات إضافية</li>
+              <li>قيادة صناعة التمويل الإسلامي الرقمي</li>
+            </ul>
+            <span class="phase-status">⏳ قادمة</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcoming Features -->
+    <section class="upcoming-features reveal">
+      <h2>🎁 الميزات القادمة</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 40px 0;">
+        <div style="background: rgba(139, 92, 246, 0.1); padding: 25px; border-radius: 12px; border-left: 4px solid #8b5cf6;">
+          <h4 style="color: #8b5cf6; margin-bottom: 10px;">🏦 خدمات مصرفية</h4>
+          <p style="color: #e5e7eb;">حسابات توفير وقروض متوافقة شرعياً</p>
+        </div>
+
+        <div style="background: rgba(212, 175, 55, 0.1); padding: 25px; border-radius: 12px; border-left: 4px solid #d4af37;">
+          <h4 style="color: #d4af37; margin-bottom: 10px;">📊 تحليلات متقدمة</h4>
+          <p style="color: #e5e7eb;">أدوات تحليل مالية وتوقعات السوق</p>
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.1); padding: 25px; border-radius: 12px; border-left: 4px solid #10b981;">
+          <h4 style="color: #10b981; margin-bottom: 10px;">🎓 برامج تعليمية</h4>
+          <p style="color: #e5e7eb;">دورات تعليمية عن التمويل الإسلامي</p>
+        </div>
+
+        <div style="background: rgba(220, 38, 38, 0.1); padding: 25px; border-radius: 12px; border-left: 4px solid #dc2626;">
+          <h4 style="color: #dc2626; margin-bottom: 10px;">🤝 برامج الشراكة</h4>
+          <p style="color: #e5e7eb;">فرص تعاون مع المؤسسات المالية</p>
+        </div>
+
+        <div style="background: rgba(168, 85, 247, 0.1); padding: 25px; border-radius: 12px; border-left: 4px solid #a855f7;">
+          <h4 style="color: #a855f7; margin-bottom: 10px;">🌐 تطبيق موبايل</h4>
+          <p style="color: #e5e7eb;">تطبيق متقدم لـ iOS و Android</p>
+        </div>
+
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 25px; border-radius: 12px; border-left: 4px solid #3b82f6;">
+          <h4 style="color: #3b82f6; margin-bottom: 10px;">🔐 محافظ ذكية</h4>
+          <p style="color: #e5e7eb;">محافظ بحماية متقدمة وميزات الأمان</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-full reveal">
+      <h2>شارك معنا في الرحلة</h2>
+      <p>كن جزءاً من بناء مستقبل التمويل الإسلامي</p>
+      <a href="../pages/join.html" class="btn-primary">الانضمام الآن</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>MDM1</h3>
+        <p>عملة رقمية شرعية مبنية على قيم الإسلام والعدالة المالية</p>
+      </div>
+      <div class="footer-section">
+        <h4>الروابط السريعة</h4>
+        <ul>
+          <li><a href="../index.html">الرئيسية</a></li>
+          <li><a href="../pages/whitepaper.html">الورقة البيضاء</a></li>
+          <li><a href="../pages/hub.html">المنصة</a></li>
+          <li><a href="../pages/join.html">الانضمام</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>المتابعة</h4>
+        <div class="social-links">
+          <a href="#" class="social-link">Twitter</a>
+          <a href="#" class="social-link">Discord</a>
+          <a href="#" class="social-link">Telegram</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 MDM1. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
   <script src="../js/global.js"></script>
   <script src="../js/pages.js"></script>
 </body>
