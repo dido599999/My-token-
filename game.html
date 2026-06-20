@@ -1,21 +1,456 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MDM1 — لعبة رع وأنوبيس</title>
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/pages.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDM1 — طقوس الدوات</title>
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
 
-  <!-- NAVBAR — يُحقن من global.js -->
+<div id="particles"></div>
 
-  <!-- لعبة الثلاثية React منقولة هنا -->
+<audio id="bg-music" src="../audio/background.mp3" loop preload="none"></audio>
+<button id="music-btn" style="display:none">🔇</button>
 
-  <!-- FOOTER — يُحقن من global.js -->
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="../index.html" class="nav-logo">👁️ MDM1</a>
+  <a href="../index.html" class="nav-back">← العودة</a>
+</nav>
 
-  <script src="../js/global.js"></script>
-  <script src="../js/pages.js"></script>
+<!-- HERO -->
+<section class="page-hero">
+  <span class="page-label">Game • اللعبة</span>
+  <h1 class="page-title">🎮 طقوس الدوات</h1>
+  <p class="page-sub">رحلة عبر العالم السفلي المصري · اختر طريقك بحكمة</p>
+</section>
+
+<div class="page-content">
+  <div class="divider"></div>
+
+  <!-- شاشة البداية -->
+  <div id="screen-start" class="reveal">
+    <div style="text-align:center; max-width:620px; margin:0 auto;">
+      <div style="font-size:5rem; margin-bottom:1rem; animation: float 3s ease-in-out infinite;">⚖️</div>
+      <h2 style="font-family:'Cinzel',serif; color:var(--gold-bright); font-size:clamp(1.4rem,4vw,2rem); margin-bottom:1rem; letter-spacing:3px;">
+        ميزان ماعت
+      </h2>
+      <p style="font-size:1rem; line-height:2.2; opacity:0.85; margin-bottom:1.5rem;">
+        روحك تقف أمام ميزان ماعت في الدوات —
+        قلبك في كفة، وريشة الحق في الأخرى.
+        ستواجه تحديات من آلهة مصر القديمة،
+        وكل قرار تتخذه يُحدد مصيرك الأبدي.
+      </p>
+      <div class="card-grid" style="grid-template-columns:repeat(3,1fr); gap:0.75rem; margin-bottom:2rem;">
+        <div class="card" style="text-align:center; padding:1rem;">
+          <div style="font-size:1.5rem;">❤️</div>
+          <div style="font-size:0.7rem; color:var(--gold-dim); margin-top:0.3rem;">3 أرواح</div>
+        </div>
+        <div class="card" style="text-align:center; padding:1rem;">
+          <div style="font-size:1.5rem;">🗺️</div>
+          <div style="font-size:0.7rem; color:var(--gold-dim); margin-top:0.3rem;">5 غرف</div>
+        </div>
+        <div class="card" style="text-align:center; padding:1rem;">
+          <div style="font-size:1.5rem;">⚡</div>
+          <div style="font-size:0.7rem; color:var(--gold-dim); margin-top:0.3rem;">قرارات مصيرية</div>
+        </div>
+      </div>
+
+      <!-- اختيار الشخصية -->
+      <h3 style="color:var(--gold-dim); letter-spacing:3px; font-size:0.85rem; margin-bottom:1rem;">اختر روحك</h3>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem;">
+        <div class="char-card selected" data-char="0" onclick="selectChar(0)">
+          <div style="font-size:2rem;">🦅</div>
+          <div style="font-size:0.8rem; color:var(--gold-bright); margin-top:0.3rem;">حورس</div>
+          <div style="font-size:0.65rem; opacity:0.6; margin-top:0.2rem;">قوة +2</div>
+        </div>
+        <div class="char-card" data-char="1" onclick="selectChar(1)">
+          <div style="font-size:2rem;">🐱</div>
+          <div style="font-size:0.8rem; color:var(--gold-bright); margin-top:0.3rem;">باستت</div>
+          <div style="font-size:0.65rem; opacity:0.6; margin-top:0.2rem;">حظ +2</div>
+        </div>
+        <div class="char-card" data-char="2" onclick="selectChar(2)">
+          <div style="font-size:2rem;">🐊</div>
+          <div style="font-size:0.8rem; color:var(--gold-bright); margin-top:0.3rem;">سوبك</div>
+          <div style="font-size:0.65rem; opacity:0.6; margin-top:0.2rem;">دفاع +2</div>
+        </div>
+        <div class="char-card" data-char="3" onclick="selectChar(3)">
+          <div style="font-size:2rem;">🦁</div>
+          <div style="font-size:0.8rem; color:var(--gold-bright); margin-top:0.3rem;">سخمت</div>
+          <div style="font-size:0.65rem; opacity:0.6; margin-top:0.2rem;">هجوم +3</div>
+        </div>
+      </div>
+
+      <button class="cta-btn" onclick="startGame()">⚔️ ادخل الدوات</button>
+    </div>
+  </div>
+
+  <!-- شاشة اللعبة -->
+  <div id="screen-game" style="display:none; max-width:680px; margin:0 auto;">
+
+    <!-- HUD -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+      <div style="display:flex; gap:0.5rem;" id="lives-display"></div>
+      <div style="font-size:0.75rem; color:var(--gold-dim); letter-spacing:3px;" id="room-display">الغرفة 1 / 5</div>
+      <div style="font-family:'Cinzel',serif; color:var(--gold-bright); font-size:1rem;" id="score-display">✨ 0</div>
+    </div>
+
+    <!-- شريط التقدم -->
+    <div style="height:3px; background:rgba(201,168,76,0.1); border-radius:2px; margin-bottom:2rem; overflow:hidden;">
+      <div id="game-progress" style="height:100%; width:0%; background:linear-gradient(90deg,var(--gold),var(--gold-bright)); transition:width 0.6s ease; border-radius:2px;"></div>
+    </div>
+
+    <!-- بطاقة الغرفة -->
+    <div class="card" id="room-card" style="padding:2rem; border-color:rgba(201,168,76,0.25); margin-bottom:1.5rem; text-align:center;">
+      <div id="room-icon" style="font-size:4rem; margin-bottom:1rem; animation: float 3s ease-in-out infinite;"></div>
+      <span id="room-label" style="font-size:0.7rem; letter-spacing:4px; color:var(--gold-dim); display:block; margin-bottom:0.75rem;"></span>
+      <h3 id="room-title" style="font-family:'Cinzel',serif; color:var(--gold-bright); font-size:clamp(1.1rem,3vw,1.5rem); margin-bottom:1rem; letter-spacing:2px;"></h3>
+      <p id="room-desc" style="font-size:0.95rem; line-height:2; opacity:0.85;"></p>
+    </div>
+
+    <!-- تغذية راجعة -->
+    <div id="game-feedback" style="
+      display:none;
+      padding:1.2rem 1.5rem;
+      border-radius:12px;
+      margin-bottom:1.5rem;
+      font-size:0.95rem;
+      line-height:1.9;
+      text-align:center;
+    "></div>
+
+    <!-- الخيارات -->
+    <div id="choices-area" style="display:flex; flex-direction:column; gap:0.75rem;"></div>
+
+    <!-- زر التالي -->
+    <div style="text-align:center; margin-top:1.5rem;">
+      <button id="game-next-btn" onclick="nextRoom()" style="display:none;" class="cta-btn">
+        التقدم للأمام ←
+      </button>
+    </div>
+
+  </div>
+
+  <!-- شاشة النهاية -->
+  <div id="screen-end" style="display:none; text-align:center; max-width:600px; margin:0 auto;">
+    <div id="end-icon" style="font-size:5rem; margin-bottom:1rem;"></div>
+    <h2 id="end-title" style="font-family:'Cinzel',serif; font-size:clamp(1.5rem,5vw,2.5rem); color:var(--gold-bright); margin-bottom:0.5rem; letter-spacing:3px;"></h2>
+    <p id="end-sub" style="font-size:1rem; opacity:0.7; margin-bottom:1rem; line-height:1.9;"></p>
+    <div style="font-family:'Cinzel',serif; font-size:clamp(3rem,10vw,5rem); color:var(--gold-bright); text-shadow:0 0 60px var(--gold); margin:1rem 0;">
+      <span id="end-score">0</span>
+      <span style="font-size:1.5rem; opacity:0.5;"> نقطة</span>
+    </div>
+    <div class="verse" id="end-verse" style="margin:2rem auto;"></div>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:2rem;">
+      <button class="cta-btn" onclick="restartGame()">🔄 العب مجدداً</button>
+      <a href="quiz.html" class="nav-back" style="display:inline-flex; align-items:center; padding:0.9rem 2rem;">
+        🧠 جرّب الاختبار
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  ✦ &nbsp; MDM1 · طقوس الدوات · رحلة الروح الأبدية &nbsp; ✦
+</footer>
+
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-8px); }
+  75%       { transform: translateX(8px); }
+}
+
+.char-card {
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid rgba(201,168,76,0.2);
+  background: rgba(201,168,76,0.03);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s;
+  min-width: 90px;
+}
+.char-card:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.08); }
+.char-card.selected {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.12);
+  box-shadow: 0 0 20px rgba(201,168,76,0.2);
+}
+
+.choice-btn {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(201,168,76,0.2);
+  background: rgba(201,168,76,0.03);
+  color: var(--light);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: right;
+  width: 100%;
+  line-height: 1.6;
+}
+.choice-btn:hover:not(:disabled) {
+  background: rgba(201,168,76,0.1);
+  border-color: var(--gold);
+  transform: translateX(-4px);
+}
+.choice-btn.good  { background:rgba(52,211,153,0.12); border-color:#34d399; color:#34d399; }
+.choice-btn.bad   { background:rgba(248,113,113,0.12); border-color:#f87171; color:#f87171; }
+.choice-btn.neutral { background:rgba(251,146,60,0.12); border-color:#fb923c; color:#fb923c; }
+.choice-btn:disabled { cursor:not-allowed; opacity:0.7; }
+</style>
+
+<script src="../js/global.js"></script>
+<script src="../js/pages.js"></script>
+<script>
+// ══════════════════════════════
+// بيانات اللعبة
+// ══════════════════════════════
+const characters = [
+  { name:'حورس',  icon:'🦅', bonus:'قوة',  stat: 'power' },
+  { name:'باستت', icon:'🐱', bonus:'حظ',   stat: 'luck'  },
+  { name:'سوبك',  icon:'🐊', bonus:'دفاع', stat: 'def'   },
+  { name:'سخمت',  icon:'🦁', bonus:'هجوم', stat: 'atk'   }
+];
+
+const rooms = [
+  {
+    icon: '🚪',
+    label: 'بوابة الأول · Gate of Osiris',
+    title: 'باب أوزيريس',
+    desc: 'تقف أمام البوابة الأولى للدوات. الحارس أنوبيس يحدق فيك بعينيه الذهبيتين — "ما الذي تحمله في قلبك يا قادم؟"',
+    choices: [
+      { text: '⚖️ "أحمل الحق والأمانة — لم أظلم أحداً في حياتي"', type: 'good',    points: 30, feedback: '✨ يبتسم أنوبيس — "روح نقية تستحق العبور." البوابة تنفتح بهدوء.' },
+      { text: '💰 "أحمل الذهب والثروة — أشتري عبوري"',           type: 'bad',     points: 0,  feedback: '💀 يهز أنوبيس رأسه — "الذهب لا يشتري الحق هنا." تفقد روحاً!', loseLive: true },
+      { text: '🤐 تصمت وتنتظر أن يفتح الباب من تلقاء نفسه',      type: 'neutral', points: 10, feedback: '⏳ الصمت له حكمة أحياناً. الباب يفتح لكن ببطء — عبرت بأقل مكافأة.' }
+    ]
+  },
+  {
+    icon: '🔥',
+    label: 'قاعة الاختبار · Hall of Truth',
+    title: 'قاعة النيران الأربعين',
+    desc: 'أربعون إلهاً يجلسون في صفين متقابلين. كل واحد يحمل سؤالاً. الإلهة ماعت تقف في المنتصف — "أثبت أنك تعرف الحق من الباطل!"',
+    choices: [
+      { text: '📖 "الحق هو ما ينفع الناس ويرفع الظلم عنهم"',     type: 'good',    points: 35, feedback: '🌟 تضيء القاعة كلها — ماعت ترفع الريشة وتومئ بالموافقة.' },
+      { text: '⚔️ "الحق هو ما أنا قادر على فرضه بقوتي"',         type: 'bad',     points: 0,  feedback: '⚡ صاعقة تضرب الأرض أمامك — "هذا كلام الطغاة!" تفقد روحاً!', loseLive: true },
+      { text: '🌊 "الحق نسبي — كل شخص له حقيقته"',              type: 'neutral', points: 15, feedback: '🤔 الآلهة تتهامس — جواب فلسفي لكنه لم يُقنع الجميع. تعبر بنقاط جزئية.' }
+    ]
+  },
+  {
+    icon: '🐍',
+    label: 'نهر الظلام · River of Apep',
+    title: 'مواجهة أبيب',
+    desc: 'الثعبان العملاق أبيب يسد النهر — جسده يمتد من الأفق إلى الأفق. لا مرور إلا بالتغلب عليه. كيف تواجهه؟',
+    choices: [
+      { text: '🪄 تستعين بتعويذة رع القديمة "آخ أم رع"',          type: 'good',    points: 40, feedback: '☀️ نور ذهبي يشق الظلام — أبيب ينكمش ويختفي. رع يبارك خطواتك!' },
+      { text: '🗡️ تهجم عليه بسلاح مادي مباشرة',                  type: 'bad',     points: 0,  feedback: '😵 أبيب لا يُهزم بسلاح مادي — يبتلع سلاحك! تفقد روحاً!', loseLive: true },
+      { text: '🚣 تحاول العبور من جانبه بهدوء وخفاء',             type: 'neutral', points: 20, feedback: '😤 يشمّك أبيب لكنه يسمح بعبورك — ربما احتقرك! نجحت لكن بثمن.' }
+    ]
+  },
+  {
+    icon: '🏛️',
+    label: 'قاعة الأسرار · Chamber of Thoth',
+    title: 'امتحان تحوت',
+    desc: 'إله الحكمة تحوت يجلس خلف مكتبه الكوني — أمامه سجل كل الأفعال. يرفع قلمه ويسألك: "ما الذي بنيت في حياتك يستحق التسجيل؟"',
+    choices: [
+      { text: '🌍 "بنيت ما ينفع الناس بعدي — علماً أو عملاً أو فكرة"', type: 'good',    points: 45, feedback: '📜 تحوت يكتب اسمك بالذهب — "هذا يستحق الخلود!" نقاط مضاعفة!' },
+      { text: '🏰 "بنيت ثروة وقصراً لنفسي ولأسرتي فقط"',             type: 'neutral', points: 15, feedback: '✏️ تحوت يكتب بالفضة — "جيد لكن ضيّق الأفق." تعبر بنقاط محدودة.' },
+      { text: '😶 "لم أبنِ شيئاً — كنت مشغولاً بالبقاء"',             type: 'bad',     points: 5,  feedback: '😔 تحوت يتنهّد — "العمر أطول مما تظن." تعبر بأقل نقطة ممكنة.' }
+    ]
+  },
+  {
+    icon: '⚖️',
+    label: 'الحكم الأبدي · Final Judgment',
+    title: 'ميزان ماعت الأكبر',
+    desc: 'اللحظة الأبدية وصلت — قلبك في كفة الميزان وريشة الحق في الأخرى. أوزيريس يحدق فيك من عرشه. أمامك آخر قرار في رحلتك.',
+    choices: [
+      { text: '🙏 "أسلّم قلبي بكل ما فيه — الحسنات والأخطاء — طالباً الرحمة"', type: 'good',    points: 50, feedback: '👑 الميزان يتوازن تماماً — أوزيريس يقف ويصفق. "روح تعرف الحق!" الجنة تفتح أبوابها!' },
+      { text: '💪 "قلبي أخف من الريشة — أنا بلا ذنوب على الإطلاق"',           type: 'bad',     points: 0,  feedback: '⚡ الميزان يميل — الغرور أثقل من كل الذنوب! أمّيت ينتظر. تفقد روحاً!', loseLive: true },
+      { text: '🤲 "أعترف بأخطائي وأتعهد بالإصلاح إن مُنحت فرصة أخرى"',       type: 'neutral', points: 35, feedback: '🌅 أوزيريس يبتسم — "الاعتراف بداية الحكمة." تعبر بسلام وبنقاط كريمة.' }
+    ]
+  }
+];
+
+// ══════════════════════════════
+// حالة اللعبة
+// ══════════════════════════════
+let gameState = {
+  room: 0,
+  lives: 3,
+  score: 0,
+  chosenChar: 0,
+  roomDone: false
+};
+
+// ── اختيار الشخصية
+function selectChar(index) {
+  gameState.chosenChar = index;
+  document.querySelectorAll('.char-card').forEach((c, i) => {
+    c.classList.toggle('selected', i === index);
+  });
+}
+
+// ── بدء اللعبة
+function startGame() {
+  gameState = { room:0, lives:3, score:0, chosenChar:gameState.chosenChar, roomDone:false };
+  document.getElementById('screen-start').style.display = 'none';
+  document.getElementById('screen-end').style.display = 'none';
+  document.getElementById('screen-game').style.display = 'block';
+  renderRoom();
+}
+
+// ── عرض الغرفة
+function renderRoom() {
+  gameState.roomDone = false;
+  const r = rooms[gameState.room];
+  document.getElementById('room-display').textContent  = `الغرفة ${gameState.room + 1} / ${rooms.length}`;
+  document.getElementById('score-display').textContent = `✨ ${gameState.score}`;
+  document.getElementById('game-progress').style.width = `${(gameState.room / rooms.length) * 100}%`;
+  document.getElementById('room-icon').textContent  = r.icon;
+  document.getElementById('room-label').textContent = r.label;
+  document.getElementById('room-title').textContent = r.title;
+  document.getElementById('room-desc').textContent  = r.desc;
+  document.getElementById('game-feedback').style.display = 'none';
+  document.getElementById('game-next-btn').style.display = 'none';
+  renderLives();
+
+  const area = document.getElementById('choices-area');
+  area.innerHTML = '';
+  r.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c.text;
+    btn.onclick = () => makeChoice(i);
+    area.appendChild(btn);
+  });
+}
+
+// ── عرض الأرواح
+function renderLives() {
+  const el = document.getElementById('lives-display');
+  el.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const span = document.createElement('span');
+    span.style.fontSize = '1.3rem';
+    span.textContent = i < gameState.lives ? '❤️' : '🖤';
+    el.appendChild(span);
+  }
+}
+
+// ── اتخاذ القرار
+function makeChoice(index) {
+  if (gameState.roomDone) return;
+  gameState.roomDone = true;
+
+  const r = rooms[gameState.room];
+  const choice = r.choices[index];
+  const btns = document.querySelectorAll('.choice-btn');
+
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === index) b.classList.add(choice.type);
+  });
+
+  if (choice.loseLive) {
+    gameState.lives--;
+    renderLives();
+    document.getElementById('room-card').style.animation = 'shake 0.5s ease';
+    setTimeout(() => { document.getElementById('room-card').style.animation = ''; }, 500);
+  } else {
+    gameState.score += choice.points;
+  }
+
+  document.getElementById('score-display').textContent = `✨ ${gameState.score}`;
+
+  const fb = document.getElementById('game-feedback');
+  fb.style.display = 'block';
+  fb.style.background = choice.type === 'good'
+    ? 'rgba(52,211,153,0.08)'
+    : choice.type === 'bad'
+    ? 'rgba(248,113,113,0.08)'
+    : 'rgba(251,146,60,0.08)';
+  fb.style.border = `1px solid ${
+    choice.type === 'good' ? 'rgba(52,211,153,0.3)'
+    : choice.type === 'bad' ? 'rgba(248,113,113,0.3)'
+    : 'rgba(251,146,60,0.3)'}`;
+  fb.style.color = choice.type === 'good' ? '#34d399'
+    : choice.type === 'bad' ? '#f87171' : '#fb923c';
+  fb.textContent = choice.feedback;
+
+  if (gameState.lives <= 0) {
+    setTimeout(() => endGame(false), 1800);
+    return;
+  }
+
+  const isLast = gameState.room >= rooms.length - 1;
+  const nextBtn = document.getElementById('game-next-btn');
+  nextBtn.style.display = 'inline-block';
+  nextBtn.textContent = isLast ? '⚖️ الحكم الأبدي' : 'التقدم للأمام ←';
+}
+
+// ── الغرفة التالية
+function nextRoom() {
+  gameState.room++;
+  if (gameState.room >= rooms.length) {
+    endGame(true);
+  } else {
+    renderRoom();
+  }
+}
+
+// ── نهاية اللعبة
+function endGame(completed) {
+  document.getElementById('screen-game').style.display = 'none';
+  document.getElementById('screen-end').style.display  = 'block';
+
+  let icon, title, sub, verse;
+
+  if (!completed || gameState.lives <= 0) {
+    icon  = '💀';
+    title = 'ابتلعتك أمّيت';
+    sub   = 'روحك لم تجتز اختبار الحق — لكن كل روح تستحق فرصة أخرى.';
+    verse = 'وَعَسَىٰ أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ';
+  } else if (gameState.score >= 180) {
+    icon  = '👑';
+    title = 'ملك الخلود';
+    sub   = 'روحك أخف من ريشة ماعت — أوزيريس نفسه يرحب بك في جنة الآرو.';
+    verse = 'إِنَّ الْأَبْرَارَ لَفِي نَعِيمٍ';
+  } else if (gameState.score >= 120) {
+    icon  = '⭐';
+    title = 'الروح الحرة';
+    sub   = 'اجتزت الاختبار بحكمة وتواضع — طريقك إلى النور مفتوح.';
+    verse = 'مَنْ عَمِلَ صَالِحًا فَلِنَفْسِهِ';
+  } else {
+    icon  = '🌗';
+    title = 'روح في الطريق';
+    sub   = 'لم تكتمل رحلتك بعد — الحكمة تحتاج وقتاً أطول.';
+    verse = 'وَقُل رَّبِّ زِدْنِي عِلْمًا';
+  }
+
+  document.getElementById('end-icon').textContent  = icon;
+  document.getElementById('end-title').textContent = title;
+  document.getElementById('end-sub').textContent   = sub;
+  document.getElementById('end-score').textContent = gameState.score;
+  document.getElementById('end-verse').textContent = verse;
+  document.getElementById('game-progress').style.width = '100%';
+}
+
+// ── إعادة اللعبة
+function restartGame() {
+  document.getElementById('screen-end').style.display  = 'none';
+  document.getElementById('screen-start').style.display = 'block';
+}
+</script>
 </body>
 </html>
