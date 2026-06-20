@@ -1,21 +1,330 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MDM1 — انضم إلى الحركة</title>
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/pages.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الانضمام إلى MDM1 | MDm1.org</title>
+  <meta name="description" content="انضم إلى مجتمع MDM1 وكن جزءاً من ثورة التمويل الإسلامي على البلوكتشين">
+  <meta name="keywords" content="MDM1, Sharia-compliant, cryptocurrency, blockchain, Islamic finance">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/pages.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="../images/shared/logo.png">
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="الانضمام إلى MDM1">
+  <meta property="og:description" content="كن جزءاً من ثورة العملات الرقمية الشرعية">
+  <meta property="og:type" content="website">
 </head>
 <body>
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        🔱 MDM1
+      </a>
+      <div class="nav-menu" id="nav-menu">
+        <a href="../index.html" class="nav-link">الرئيسية</a>
+        <a href="../pages/whitepaper.html" class="nav-link">الورقة البيضاء</a>
+        <a href="../pages/hub.html" class="nav-link">المنصة</a>
+        <a href="../pages/join.html" class="nav-link active">الانضمام</a>
+        <a href="../pages/community.html" class="nav-link">المجتمع</a>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
 
-  <!-- NAVBAR — يُحقن من global.js -->
+  <!-- Main Content -->
+  <main class="page-container">
+    <!-- Header -->
+    <section class="page-header">
+      <h1>الانضمام إلى MDM1</h1>
+      <p>كن من أوائل المشاركين في ثورة التمويل الإسلامي الرقمي</p>
+    </section>
 
-  <!-- نموذج الاشتراك + رقم مسلسل + شارة مؤسس -->
+    <!-- Join Content -->
+    <section class="page-content">
+      <div class="join-wrapper">
+        <!-- Benefits -->
+        <div class="benefits-section reveal">
+          <h2>🎯 لماذا تنضم الآن؟</h2>
+          
+          <div class="benefits-grid">
+            <div class="benefit-card">
+              <div class="benefit-icon">✨</div>
+              <h3>الأولوية المبكرة</h3>
+              <p>احصل على حصة مبكرة وميزات حصرية للمؤسسين</p>
+            </div>
 
-  <!-- FOOTER — يُحقن من global.js -->
+            <div class="benefit-card">
+              <div class="benefit-icon">🌙</div>
+              <h3>الامتثال الشرعي</h3>
+              <p>مشروع معتمد شرعياً يتوافق مع مبادئ الإسلام</p>
+            </div>
 
+            <div class="benefit-card">
+              <div class="benefit-icon">🔒</div>
+              <h3>الأمان والشفافية</h3>
+              <p>بناء على تقنية البلوكتشين الآمنة والمفتوحة</p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">👥</div>
+              <h3>مجتمع نشط</h3>
+              <p>انضم إلى مجتمع عالمي من المؤمنين بمشروعنا</p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">📈</div>
+              <h3>فرص النمو</h3>
+              <p>شارك في نمو المشروع واستفد من النجاح</p>
+            </div>
+
+            <div class="benefit-card">
+              <div class="benefit-icon">🎁</div>
+              <h3>مكافآت حصرية</h3>
+              <p>احصل على نقاط وميزات خاصة للأعضاء المبكرين</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Join Form -->
+        <section class="form-section reveal">
+          <h2>📝 اشترك الآن</h2>
+          <p class="form-description">
+            أدخل بريدك الإلكتروني للبقاء على اطلاع بآخر التطورات والعروض الحصرية
+          </p>
+
+          <form class="join-form" id="join-form">
+            <div class="form-group">
+              <label for="email">البريد الإلكتروني</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="your@email.com"
+                required
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+              >
+              <span class="error-message" id="email-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="name">الاسم (اختياري)</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                placeholder="اسمك الكامل"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="country">الدول/المنطقة</label>
+              <select id="country" name="country">
+                <option value="">اختر دولتك</option>
+                <option value="sa">المملكة العربية السعودية</option>
+                <option value="ae">الإمارات العربية المتحدة</option>
+                <option value="eg">مصر</option>
+                <option value="ksa">الكويت</option>
+                <option value="qa">قطر</option>
+                <option value="bh">البحرين</option>
+                <option value="om">عمان</option>
+                <option value="jo">الأردن</option>
+                <option value="ly">ليبيا</option>
+                <option value="tn">تونس</option>
+                <option value="ma">المغرب</option>
+                <option value="other">أخرى</option>
+              </select>
+            </div>
+
+            <div class="form-group checkbox">
+              <input 
+                type="checkbox" 
+                id="terms" 
+                name="terms" 
+                required
+              >
+              <label for="terms">أوافق على شروط الخدمة والخصوصية</label>
+            </div>
+
+            <div class="form-group checkbox">
+              <input 
+                type="checkbox" 
+                id="newsletter" 
+                name="newsletter"
+                checked
+              >
+              <label for="newsletter">أريد تلقي رسائل المشروع والعروض الخاصة</label>
+            </div>
+
+            <button type="submit" class="submit-button">الانضمام الآن</button>
+
+            <div class="form-message" id="form-message"></div>
+          </form>
+        </section>
+
+        <!-- Social Proof -->
+        <section class="social-proof reveal">
+          <h2>🌍 ينضم إليها الآلاف حول العالم</h2>
+          
+          <div class="stats-row">
+            <div class="stat">
+              <div class="stat-number">5000+</div>
+              <div class="stat-label">عضو مسجل</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">50+</div>
+              <div class="stat-label">دولة</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">24/7</div>
+              <div class="stat-label">الدعم المتوفر</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Mini -->
+        <section class="faq-mini reveal">
+          <h2>❓ أسئلة شائعة</h2>
+          
+          <div class="faq-item">
+            <button class="faq-question">هل الاشتراك مجاني؟</button>
+            <div class="faq-answer" style="display: none;">
+              <p>نعم، الاشتراك مجاني تماماً. يمكنك الانضمام بسهولة بإدخال بريدك الإلكتروني فقط.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">ماذا سأتلقى بعد الاشتراك؟</button>
+            <div class="faq-answer" style="display: none;">
+              <p>ستتلقى رسائل تحديث المشروع وعروض حصرية للأعضاء المبكرين والمزيد من المعلومات.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">هل بياناتي آمنة؟</button>
+            <div class="faq-answer" style="display: none;">
+              <p>نعم، نحن نتبع أعلى معايير الأمان وحماية البيانات الشخصية.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">هل يمكنني إلغاء الاشتراك؟</button>
+            <div class="faq-answer" style="display: none;">
+              <p>بالتأكيد، يمكنك إلغاء الاشتراك في أي وقت من خلال رابط في البريد الإلكتروني.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-full reveal">
+      <h2>جاهز للانضمام؟</h2>
+      <p>لا تفوت هذه الفرصة الذهبية</p>
+      <a href="#join-form" class="btn-primary">اشترك الآن</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>MDM1</h3>
+        <p>عملة رقمية شرعية مبنية على قيم الإسلام والعدالة المالية</p>
+      </div>
+      <div class="footer-section">
+        <h4>الروابط السريعة</h4>
+        <ul>
+          <li><a href="../index.html">الرئيسية</a></li>
+          <li><a href="../pages/whitepaper.html">الورقة البيضاء</a></li>
+          <li><a href="../pages/hub.html">المنصة</a></li>
+          <li><a href="../pages/community.html">المجتمع</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>المتابعة</h4>
+        <div class="social-links">
+          <a href="#" class="social-link">Twitter</a>
+          <a href="#" class="social-link">Discord</a>
+          <a href="#" class="social-link">Telegram</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 MDM1. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
   <script src="../js/global.js"></script>
   <script src="../js/pages.js"></script>
+  <script>
+    // Form Submission Handler
+    const joinForm = document.getElementById('join-form');
+    const formMessage = document.getElementById('form-message');
+
+    if (joinForm) {
+      joinForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        const country = document.getElementById('country').value;
+
+        // Validation
+        if (!email.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)) {
+          showFormMessage('البريد الإلكتروني غير صحيح', 'error');
+          return;
+        }
+
+        // Here you would send to your backend
+        console.log({
+          email,
+          name,
+          country,
+          timestamp: new Date().toISOString()
+        });
+
+        // Show success message
+        showFormMessage('✓ تم التسجيل بنجاح! تحقق من بريدك الإلكتروني', 'success');
+        joinForm.reset();
+
+        // Reset after 3 seconds
+        setTimeout(() => {
+          formMessage.textContent = '';
+        }, 3000);
+      });
+    }
+
+    function showFormMessage(message, type) {
+      formMessage.textContent = message;
+      formMessage.className = `form-message ${type}`;
+    }
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const answer = button.nextElementSibling;
+        const isOpen = answer.style.display !== 'none';
+        
+        document.querySelectorAll('.faq-answer').forEach(a => {
+          a.style.display = 'none';
+        });
+        
+        if (!isOpen) {
+          answer.style.display = 'block';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
